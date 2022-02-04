@@ -1,5 +1,10 @@
 const cart = document.querySelector('.cart__items');
-const list = document.querySelectorAll('.cart__item'); // usar querySelectorAll pois retorna um Node
+
+const btnClear = document.querySelector('.empty-cart');
+btnClear.addEventListener('click', () => { 
+  cart.innerHTML = ''; 
+  localStorage.clear();
+}); 
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -28,8 +33,10 @@ function cartItemClickListener(event) {
 const loadLocalStorage = () => {
   if (getSavedCartItems()) {
     cart.innerHTML = getSavedCartItems();
-    list.forEach((item) => {
-     item.addEventListener('click', cartItemClickListener);
+    // usar querySelectorAll pois retorna um NodeList. Para usar getElement teria que usar [...list]
+    const list = document.querySelectorAll('.cart__item'); 
+    list.forEach((element) => {
+     element.addEventListener('click', cartItemClickListener);
     });
   }
 };
@@ -37,9 +44,7 @@ const loadLocalStorage = () => {
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | 
-                  NAME: ${name} |
-                  PRICE: R$${salePrice}`;
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
