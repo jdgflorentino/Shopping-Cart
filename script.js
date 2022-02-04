@@ -79,6 +79,22 @@ async function getProducts() {
 
 getProducts();
 
+const loadingText = () => {
+  const sectionText = document.createElement('section');
+  const section = document.querySelector('.items');
+  sectionText.className = 'loading';
+  sectionText.innerText = 'carregando...';
+  section.appendChild(sectionText);
+};
+
+const load = async () => {
+  loadingText();
+  const p = document.querySelector('.loading');
+  await getProducts();
+  p.remove();
+}; 
+
 window.onload = () => {
   loadLocalStorage();
+  load();
 };
