@@ -1,3 +1,6 @@
+const cart = document.querySelector('.cart__items');
+const list = document.getElementsByClassName('cart__item');
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -12,26 +15,33 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+// percebi que não estava usando essa função que veio com o arquivo. Ela já captura o ID do produto.
+function getSkuFromProductItem(item) {
+  return item.querySelector('span.item__sku').innerText;
+}
+
 function cartItemClickListener(event) {
   event.target.remove();
+  saveCartItems(cart.innerHTML);
 }
+
+cart.addEventListener('click', cartItemClickListener);
 
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | 
                   NAME: ${name} |
-                  PRICE: $${salePrice}`;
+                  PRICE: R$${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
 
-const cart = document.querySelector('.cart__items');
-
-async function getItems(e) {
-  const itemId = e.target.parentNode.children[0].innerHTML;
+async function getItems(event) {
+  const itemId = getSkuFromProductItem(event.target.parentNode);
   const item = await fetchItem(itemId);
   cart.appendChild(createCartItemElement(item));
+  saveCartItems(cart.innerHTML);
 }
 
 function createProductItemElement({ id: sku, title: name, thumbnail: image }) {
@@ -57,8 +67,14 @@ async function getProducts() {
 
 getProducts();
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+const loadLocalStorage = () => {
+  if (getSavedCartItems()) {
+    cart.innerHTML = getSavedCartItems();
+  }
+};
 
-window.onload = () => {};
+loadLocalStorage();
+
+window.onload = () => {
+  loadLocalStorage();
+};
