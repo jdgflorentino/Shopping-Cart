@@ -30,17 +30,6 @@ function cartItemClickListener(event) {
   saveCartItems(cart.innerHTML);
 }
 
-const loadLocalStorage = () => {
-  if (getSavedCartItems()) {
-    cart.innerHTML = getSavedCartItems();
-    // usar querySelectorAll pois retorna um NodeList. Para usar getElement teria que usar [...list]
-    const list = document.querySelectorAll('.cart__item'); 
-    list.forEach((element) => {
-     element.addEventListener('click', cartItemClickListener);
-    });
-  }
-};
-
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -77,7 +66,16 @@ async function getProducts() {
 });
 }
 
-getProducts();
+const loadLocalStorage = () => {
+  if (getSavedCartItems()) {
+    cart.innerHTML = getSavedCartItems();
+    // usar querySelectorAll pois retorna um NodeList. Para usar getElement teria que usar [...list]
+    const list = document.querySelectorAll('.cart__item'); 
+    list.forEach((element) => {
+     element.addEventListener('click', cartItemClickListener);
+    });
+  }
+};
 
 const loadingText = () => {
   const sectionText = document.createElement('section');
