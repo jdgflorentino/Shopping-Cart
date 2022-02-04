@@ -1,5 +1,5 @@
 const cart = document.querySelector('.cart__items');
-const list = document.getElementsByClassName('cart__item');
+const list = document.querySelectorAll('.cart__item'); // usar querySelectorAll pois retorna um Node
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -25,7 +25,14 @@ function cartItemClickListener(event) {
   saveCartItems(cart.innerHTML);
 }
 
-cart.addEventListener('click', cartItemClickListener);
+const loadLocalStorage = () => {
+  if (getSavedCartItems()) {
+    cart.innerHTML = getSavedCartItems();
+    list.forEach((item) => {
+     item.addEventListener('click', cartItemClickListener);
+    });
+  }
+};
 
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
@@ -66,14 +73,6 @@ async function getProducts() {
 }
 
 getProducts();
-
-const loadLocalStorage = () => {
-  if (getSavedCartItems()) {
-    cart.innerHTML = getSavedCartItems();
-  }
-};
-
-loadLocalStorage();
 
 window.onload = () => {
   loadLocalStorage();
