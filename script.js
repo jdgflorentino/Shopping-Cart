@@ -1,10 +1,10 @@
 const cart = document.querySelector('.cart__items');
-
 const btnClear = document.querySelector('.empty-cart');
-btnClear.addEventListener('click', () => { 
-  cart.innerHTML = ''; 
-  localStorage.clear();
-}); 
+const parentCart = btnClear.parentNode;
+const p = document.createElement('p');
+p.className = 'total-price';
+parentCart.insertBefore(p, btnClear);
+let totalPrice = 0;
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -25,7 +25,21 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+const getPrice = async (price) => {
+  totalPrice += price;
+  p.innerText = `${parseFloat(totalPrice.toFixed(2))}`;
+};
+
+btnClear.addEventListener('click', () => { 
+  cart.innerHTML = ''; 
+  localStorage.clear();
+  p.innerHTML = 'Subtotal: 0.00';
+}); 
+
 function cartItemClickListener(event) {
+  let price = event.target.getAttribute('value');
+  price = Math.abs(price) * -1;
+  getPrice(price);
   event.target.remove();
   saveCartItems(cart.innerHTML);
 }
@@ -34,6 +48,7 @@ function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.setAttribute('value', salePrice);
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
@@ -42,6 +57,7 @@ async function getItems(event) {
   const itemId = getSkuFromProductItem(event.target.parentNode);
   const item = await fetchItem(itemId);
   cart.appendChild(createCartItemElement(item));
+  getPrice(item.price);
   saveCartItems(cart.innerHTML);
 }
 
@@ -66,30 +82,26 @@ async function getProducts() {
 });
 }
 
-const loadLocalStorage = () => {
-  if (getSavedCartItems()) {
-    cart.innerHTML = getSavedCartItems();
-    // usar querySelectorAll pois retorna um NodeList. Para usar getElement teria que usar [...list]
-    const list = document.querySelectorAll('.cart__item'); 
-    list.forEach((element) => {
-     element.addEventListener('click', cartItemClickListener);
-    });
-  }
-};
+function loadLocalStorage() {
+  if (!getSavedCartItems()) p.innerHTML = 'Subtotal: 0.00';
+  cart.innerHTML = getSavedCartItems();
+  const list = document.querySelectorAll('.cart__item');
+  list.forEach((element) => element.addEventListener('click', cartItemClickListener));
+}
 
-const loadingText = () => {
+function loadingText() {
   const sectionText = document.createElement('section');
   const section = document.querySelector('.items');
   sectionText.className = 'loading';
   sectionText.innerText = 'carregando...';
   section.appendChild(sectionText);
-};
+}
 
 const load = async () => {
   loadingText();
-  const p = document.querySelector('.loading');
+  const sectionText = document.querySelector('.loading');
   await getProducts();
-  p.remove();
+  sectionText.remove();
 }; 
 
 window.onload = () => {
