@@ -1,13 +1,23 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+<h1 align="center">:shopping_cart: Shopping Cart :shopping_cart:</h1>
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/94488292/202553416-7c878fce-831a-44da-ae7f-95fc181b38c3.gif)
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+---
+
+## 📰 Sobre o projeto
+
+Nesse projeto fiz um carrinho de compras totalmente dinâmico consumindo dados diretamente da **[API do Mercado Livre](https://developers.mercadolivre.com.br/pt_br/itens-e-buscas)** para buscar produtos à venda. Aprendi:
+
+ - Fazer requisições a uma API (Application Programming Interface);
+ - Utilizar meus conhecimentos sobre JavaScript, CSS e HTML;
+ - Trabalhar com funções assíncronas;
+ - Implementar testes unitários.
+
+---
+
+## 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+-  **[HTML]**
+-  **[Javascript]**
+-  **[CSS](https://developer.mozilla.org/pt-BR/docs/Web/CSS)**
